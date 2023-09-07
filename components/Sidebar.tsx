@@ -15,7 +15,7 @@ import { HomeIcon } from "@heroicons/react/24/solid";
 
 function Sidebar() {
   return (
-    <div className="hidden sm:flex sm:flex-col py-5 justify-between">
+    <div className="hidden sm:flex sm:flex-col py-5 justify-between sm:flex-0.15 md:flex-0.2 sticky h-[100vh] top-0">
       <div className="flex justify-start items-start flex-col">
         <Image
           src="/x.png"
@@ -54,7 +54,7 @@ function Sidebar() {
         </button>
       </div>
       {/* Profile button */}
-      <div className="hoverEffect text-gray-700 flex items-center justify-between w-full ">
+      <div className="hoverEffect text-gray-700 flex items-center justify-between w-full">
         <div className="flex gap-1 items-center justify-center">
           <Image
             src={"/x.png"}
