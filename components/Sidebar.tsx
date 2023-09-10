@@ -56,13 +56,7 @@ function Sidebar() {
       {/* Profile button */}
       <div className="hoverEffect text-gray-700 flex items-center justify-between w-full">
         <div className="flex gap-1 items-center justify-center">
-          <Image
-            src={"/x.png"}
-            alt=""
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
+          <img src={"/x.png"} alt="" className="rounded-full h-9 w-11 p-0" />
 
           <div className="flex-col justify-start text-xs hidden xl:flex">
             <h4 className="font-bold">Awais Tauqir</h4>

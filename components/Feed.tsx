@@ -27,7 +27,7 @@ function Feed() {
     },
   ];
   return (
-    <div className="h-[200vh] flex-[1] xl:flex-[.5] border-x-slate-200 border-x-2">
+    <div className="h-[200vh] flex-[1] lg:flex-[.6] border-x-slate-200 border-x-2">
       <div className="flex sticky top-0 justify-between items-center p-3 z-40 bg-white shadow-md border-gray-300">
         <h2 className="text-lg sm:text-xl font-bold">Home</h2>
         <div className="hoverEffect p-2 rounded-full flex justify-center items-center">
