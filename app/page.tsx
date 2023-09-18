@@ -1,7 +1,10 @@
 import Sidebar from "@/components/Sidebar";
 import Feed from "@/components/Feed";
-import Head from "next/head";
 import Widgets from "@/components/Widgets";
+import { getServerSession } from "next-auth/next";
+import { redirect } from "next/navigation";
+
+import { authOptions } from "./api/auth/[...nextauth]/route";
 async function fetchNews() {
   const response = await fetch(
     "https://saurav.tech/NewsAPI/everything/cnn.json"
@@ -20,13 +23,15 @@ async function fetchUsers() {
 export default async function Home() {
   const newsResults = await fetchNews();
   const randomUsers = await fetchUsers();
-  console.log(randomUsers.login);
+
+  const session = await getServerSession(authOptions);
+
+  // if (!session?.user) {
+  //   redirect("/sign-in");
+  // }
 
   return (
     <>
-      <Head>
-        <title>Twitter Clone</title>
-      </Head>
       <main className="flex min-h-screen max-w-7xl mx-auto lg:space-x-3">
         <Sidebar />
         <Feed />

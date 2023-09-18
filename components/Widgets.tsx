@@ -14,7 +14,7 @@ export default function Widgets({ articles, randomUsers }: Props) {
 
   return (
     <div className="lg:flex-[0.3] hidden lg:inline space-y-5">
-      <div className="w-[90%] xl:w-[75%] sticky top-0 bg-white py-1.5 z-50">
+      <div className="w-[90%] sticky top-0 bg-white py-1.5 z-50">
         <div className="flex items-center p-3 rounded-full bg-red-300 relative">
           <MagnifyingGlassCircleIcon className="h-5 z-50 text-gray-500" />
           <input

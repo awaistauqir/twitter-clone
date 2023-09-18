@@ -5,4 +5,7 @@
   .hoverEffect {
     @apply hover:bg-gray-300 cursor-pointer rounded-full w-[52px] xl:w-auto h-[52px] xl:h-auto xl:py-3 xl:px-5;
   }
+  .btn-primary {
+    @apply bg-blue-400 rounded-full w-56 h-12 text-center text-white font-bold shadow-md hover:brightness-95 text-lg hidden xl:flex justify-center items-center;
+  }
 }
