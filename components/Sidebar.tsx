@@ -83,7 +83,7 @@ function Sidebar() {
       <div className="hoverEffect text-gray-700 flex items-center justify-between w-full">
         <div className="flex gap-1 items-center justify-center">
           <img
-            src={session?.user?.image ?? "/x.png"}
+            src={session?.user?.image || "/x.png"}
             alt=""
             className="rounded-full h-9 w-11 p-0"
           />
