@@ -1,31 +1,27 @@
+"use client";
 import { SparklesIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Input from "./Input";
 import Post from "./Post";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "@/firebase";
+import { Post as PostType } from "@/interfaces";
 
 function Feed() {
-  const posts = [
-    {
-      id: "1",
-      name: "Sahand Ghavidel",
-      username: "codewithsahand",
-      userImage: "https://www.adscientificindex.com/pictures/0b/50734.jpg",
-      image:
-        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=874&q=80",
-      tweet: "nice view!",
-      timestamp: "2 hours ago",
-    },
-    {
-      id: "2",
-      name: "Sahand Ghavidel",
-      username: "codewithsahand",
-      userImage: "https://www.adscientificindex.com/pictures/0b/50734.jpg",
-      image:
-        "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=876&q=80",
-      tweet: "wow!",
-      timestamp: "2 days ago",
-    },
-  ];
+  const [posts, setPosts] = useState<PostType[]>([]);
+  useEffect(() => {
+    onSnapshot(
+      query(collection(db, "posts"), orderBy("timestamp", "desc")),
+      (snapshot) => {
+        let fetechedData = snapshot.docs.map((doc) => {
+          console.log(doc);
+          return { id: doc.id, ...doc.data() };
+        });
+        setPosts(fetechedData);
+        console.log(fetechedData);
+      }
+    );
+  }, []);
   return (
     <div className="h-[200vh] flex-[1] lg:flex-[.6] border-x-slate-200 border-x-2">
       <div className="flex sticky top-0 justify-between items-center p-3 z-40 bg-white shadow-md border-gray-300">

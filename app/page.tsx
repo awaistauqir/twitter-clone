@@ -2,7 +2,6 @@ import Sidebar from "@/components/Sidebar";
 import Feed from "@/components/Feed";
 import Widgets from "@/components/Widgets";
 import { getServerSession } from "next-auth/next";
-import { redirect } from "next/navigation";
 
 import { authOptions } from "./api/auth/[...nextauth]/route";
 async function fetchNews() {

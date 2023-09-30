@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export type Article = {
   url: string;
   title: string;
@@ -5,6 +7,16 @@ export type Article = {
     id: string;
     name: string;
   };
+};
+export type Post = {
+  uid: string;
+  id: string;
+  name: string;
+  username: string;
+  userImg: string;
+  image: string;
+  tweet: string;
+  timestamp: Timestamp;
 };
 export type User = {
   name: {

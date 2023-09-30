@@ -1,14 +1,7 @@
 interface PostInterface {
-  post: {
-    id: string;
-    name: string;
-    username: string;
-    userImage: string;
-    image: string;
-    tweet: string;
-    timestamp: string;
-  };
+  post: Post;
 }
+import { Post } from "@/interfaces";
 import {
   ChartBarIcon,
   ChatBubbleOvalLeftEllipsisIcon,
@@ -17,8 +10,9 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { ShareIcon } from "@heroicons/react/24/solid";
-
+import Moment from "react-moment";
 export default function Post({ post }: PostInterface) {
+  console.log(post);
   return (
     <div className="p-3 cursor-pointer border-b border-gray-200">
       {/* user image */}
@@ -33,7 +27,7 @@ export default function Post({ post }: PostInterface) {
           <div className="flex items-center justify-center space-x-1 xl:space-x-2">
             <img
               className="h-9 w-9 rounded-full sm:h-11 sm:w-11"
-              src={post.userImage}
+              src={post.userImg}
               alt="user-img"
             />
             <div className="flex flex-col justify-start sm:space-y-1 xl:space-y-2">
@@ -46,8 +40,8 @@ export default function Post({ post }: PostInterface) {
                   @{post.username}
                   {" -"}
                 </span>
-                <span className="text-xs sm:text-[15px] hover:underline text-gray-500">
-                  {post.timestamp}
+                <span className="text-xs sm:text-[15px] text-gray-500">
+                  <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
                 </span>
               </div>
               {/* post text */}
