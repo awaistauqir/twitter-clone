@@ -1,6 +1,8 @@
+"use client";
 interface PostInterface {
   post: Post;
 }
+import { db } from "@/firebase";
 import { Post } from "@/interfaces";
 import {
   ChartBarIcon,
@@ -10,8 +12,49 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { ShareIcon } from "@heroicons/react/24/solid";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import Moment from "react-moment";
+
 export default function Post({ post }: PostInterface) {
+  const { data: session } = useSession();
+  const [likes, setLikes] = useState<any[]>([]);
+  const [hasLiked, setHasLiked] = useState<Boolean>(false);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "posts", post.id, "likes"),
+      (snapshot) => {
+        console.log(snapshot.docs.map((element) => element.id));
+        setLikes(snapshot.docs.map((element) => element.id));
+      }
+    );
+  }, [db]);
+  useEffect(() => {
+    setHasLiked(likes.includes(session?.user.uid));
+    console.log(likes, hasLiked);
+  }, [likes]);
+
+  async function likeHandler() {
+    if (session) {
+      if (hasLiked) {
+        await deleteDoc(doc(db, "posts", post.id, "likes", session?.user.uid));
+      } else {
+        await setDoc(doc(db, "posts", post.id, "likes", session?.user.uid), {
+          username: session.user.username,
+        });
+      }
+    } else {
+      signIn();
+    }
+  }
   console.log(post);
   return (
     <div className="p-3 cursor-pointer border-b border-gray-200">
@@ -66,6 +109,28 @@ export default function Post({ post }: PostInterface) {
         <ChatBubbleOvalLeftEllipsisIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
         <TrashIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100" />
         <HeartIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100" />
+        <div className="flex items-center">
+          {hasLiked ? (
+            <HeartIcon
+              onClick={likeHandler}
+              className="h-9 w-9 hoverEffect p-2 text-red-600 bg hover:bg-red-100"
+            />
+          ) : (
+            <HeartIcon
+              onClick={likeHandler}
+              className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-sky-100"
+            />
+          )}
+          {likes.length > 0 && (
+            <span
+              className={`${hasLiked && "text-red-600"} text-sm select-none`}
+            >
+              {" "}
+              {likes.length}
+            </span>
+          )}
+        </div>
+
         <ShareIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
         <ChartBarIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
       </div>
