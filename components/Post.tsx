@@ -2,7 +2,7 @@
 interface PostInterface {
   post: Post;
 }
-import { db } from "@/firebase";
+import { db, storage } from "@/firebase";
 import { Post } from "@/interfaces";
 import {
   ChartBarIcon,
@@ -19,6 +19,7 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
+import { deleteObject, ref } from "firebase/storage";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Moment from "react-moment";
@@ -54,6 +55,18 @@ export default function Post({ post }: PostInterface) {
     } else {
       signIn();
     }
+  }
+  function deletePostHanlder(uid: String | undefined) {
+    if (!session) {
+      return;
+    }
+    if (window.confirm("Are you sure you want to delete?"))
+      if (session.user.uid === uid) {
+        deleteDoc(doc(db, "posts", post.id));
+        if (post.image) {
+          deleteObject(ref(storage, `posts/${post.id}/image`));
+        }
+      }
   }
   console.log(post);
   return (
@@ -107,7 +120,12 @@ export default function Post({ post }: PostInterface) {
 
       <div className="flex justify-between text-gray-500 p-2">
         <ChatBubbleOvalLeftEllipsisIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
-        <TrashIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100" />
+        <TrashIcon
+          onClick={() => {
+            deletePostHanlder(session?.user?.uid);
+          }}
+          className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
+        />
         <HeartIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100" />
         <div className="flex items-center">
           {hasLiked ? (
